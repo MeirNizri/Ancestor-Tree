@@ -27,6 +27,7 @@ TEST_CASE("Test relation 1") {
      .addFather("Isaac", "Avraham")
      .addMother("Isaac", "Sarah")
      .addFather("Avraham", "Terah");
+    T.display();
      
     CHECK(T.relation("Yosef") == string("me")); 
     CHECK(T.relation("Yaakov") == string("father"));
@@ -49,12 +50,10 @@ TEST_CASE("Test find 1") {
     CHECK(T.find("me") == string("Yosef"));
     CHECK(T.find("father") == string("Yaakov"));
     CHECK(T.find("mother") == string("Rachel"));
-    CHECK(T.find("grandfather") == string("Isaac")); 
-    CHECK(T.find("grandmother") == string("Rivka"));
     CHECK(T.find("great-grandfather") == string("Avraham"));
     CHECK(T.find("great-grandmother") == string("Sarah"));
-    CHECK(T.find("grandfather") == string("Lavan"));
-    CHECK(T.find("grandmother") == string("UN"));
+    CHECK((T.find("grandfather") == string("Isaac") || T.find("grandfather") == string("Lavan")));
+    CHECK((T.find("grandmother") == string("Rivka") || T.find("grandmother") == string("UN")));
     CHECK(T.find("great-great-grandfather") == string("Terah"));
     CHECK_THROWS(T.find("uncle"));
     CHECK_THROWS(T.find("great-great-grandmother"));
@@ -87,7 +86,6 @@ TEST_CASE("Test remove 1") {
     CHECK_THROWS(T.find("great-great-great-grandfather"));
 }    
 
-
 TEST_CASE("Test relation 2") {
     T2.addFather("Meir", "Michael")  
      .addMother("Meir", "Rivka")   
@@ -99,6 +97,7 @@ TEST_CASE("Test relation 2") {
      .addMother("Rephael", "Nofar")
      .addFather("Avraham", "Shalom")
      .addMother("Avraham", "Dana");
+    T2.display();
      
     CHECK(T2.relation("Meir") == string("me")); 
     CHECK(T2.relation("Michael") == string("father"));
@@ -121,25 +120,21 @@ TEST_CASE("Test relation 2") {
 }
 
 TEST_CASE("Test find 2") {
-    CHECK(T.find("me") == string("Meir"));
-    CHECK(T.find("father") == string("Michael"));
-    CHECK(T.find("mother") == string("Rivka"));
-    CHECK(T.find("grandfather") == string("Rephael")); 
-    CHECK(T.find("grandmother") == string("Hana"));
-    CHECK(T.find("grandfather") == string("Avraham"));
-    CHECK(T.find("grandmother") == string("Ester"));
-    CHECK(T.find("great-grandfather") == string("Asher"));
-    CHECK(T.find("great-grandmother") == string("Nofar"));
-    CHECK(T.find("great-grandfather") == string("Shalom"));
-    CHECK(T.find("great-grandmother") == string("Dana"));
-    CHECK_THROWS(T.find("uncle"));
-    CHECK_THROWS(T.find("great-great-grandmother"));
-    CHECK_THROWS(T.find("great-great-great-grandfather"));
-    CHECK_THROWS(T.find(" "));
+    CHECK(T2.find("me") == string("Meir"));
+    CHECK(T2.find("father") == string("Michael"));
+    CHECK(T2.find("mother") == string("Rivka"));
+    CHECK((T2.find("grandfather") == string("Rephael") || T.find("grandfather") == string("Avraham")));
+    CHECK((T2.find("grandmother") == string("Hana") || T.find("grandmother") == string("Ester")));
+    CHECK((T2.find("great-grandfather") == string("Asher") || T.find("great-grandfather") == string("Shalom")));
+    CHECK((T2.find("great-grandmother") == string("Nofar") || T.find("great-grandmother") == string("Dana")));
+    CHECK_THROWS(T2.find("uncle"));
+    CHECK_THROWS(T2.find("great-great-grandmother"));
+    CHECK_THROWS(T2.find("great-great-great-grandfather"));
+    CHECK_THROWS(T2.find(" "));
 }
 
 TEST_CASE("Test remove 2") {
-    T.remove("Ester")
+    T2.remove("Ester")
      .remove("Avraham");
 CHECK(T2.relation("Meir") == string("me")); 
     CHECK(T2.relation("Michael") == string("father"));
@@ -155,17 +150,15 @@ CHECK(T2.relation("Meir") == string("me"));
     CHECK(T2.relation("dana") == string("unrelated"));
     CHECK(T2.relation("abc") == string("unrelated"));
     CHECK(T2.relation("shalom") == string("unrelated"));
-    CHECK(T.find("me") == string("Meir"));
-    CHECK(T.find("father") == string("Michael"));
-    CHECK(T.find("mother") == string("Rivka"));
-    CHECK(T.find("grandfather") == string("Rephael")); 
-    CHECK(T.find("grandmother") == string("Hana"));
-    CHECK(T.find("grandfather") == string("Avraham"));
-    CHECK(T.find("grandmother") == string("Ester"));
-    CHECK(T.find("great-grandfather") == string("Asher"));
-    CHECK(T.find("great-grandmother") == string("Nofar"));
-    CHECK_THROWS(T.find("uncle"));
-    CHECK_THROWS(T.find("great-great-grandmother"));
-    CHECK_THROWS(T.find("great-great-great-grandfather"));
-    CHECK_THROWS(T.find(" "));
+    CHECK(T2.find("me") == string("Meir"));
+    CHECK(T2.find("father") == string("Michael"));
+    CHECK(T2.find("mother") == string("Rivka"));
+    CHECK(T2.find("grandfather") == string("Rephael")); 
+    CHECK(T2.find("grandmother") == string("Hana"));
+    CHECK(T2.find("great-grandfather") == string("Asher"));
+    CHECK(T2.find("great-grandmother") == string("Nofar"));
+    CHECK_THROWS(T2.find("uncle"));
+    CHECK_THROWS(T2.find("great-great-grandmother"));
+    CHECK_THROWS(T2.find("great-great-great-grandfather"));
+    CHECK_THROWS(T2.find(" "));
 }    
